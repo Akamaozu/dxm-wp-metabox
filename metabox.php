@@ -50,9 +50,9 @@ class metabox_handler {
 					$metabox['title'], 
 					$metabox['callback'], 
 					$posttype, 
-					'advanced',
-					'high', 
-					$current_metabox = array( "data" => $metabox, "name" => $metabox_name )
+					$metabox['context'], 
+					$metabox['priority'], 
+					$metabox['callbackargs']
 					);
 				}
 			
@@ -65,9 +65,9 @@ class metabox_handler {
 				$metabox['title'], 
 				$metabox['callback'], 
 				$metabox['posttypes'], 
-				'advanced', 
-				'high', 
-				$current_metabox = array( "data" => $metabox, "name" => $metabox_name )
+				$metabox['context'], 
+				$metabox['priority'],
+				$metabox['callbackargs']
 				);
 			
 			}
