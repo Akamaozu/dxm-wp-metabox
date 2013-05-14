@@ -229,12 +229,11 @@ When Creating a Metabox
 
 	*String or Array containing post types to create the metabox on.* 
 
-	*// single post type*
-	
+		// single post type	
 		$args[ 'post_type' ] => "post"
+ 
 
-	*// multiple post types*
-		
+		// multiple post types		
 		$args[ 'post_type' ] => array( "post",  "page" )
 
 4. **$args[** 'title' **]**
@@ -295,7 +294,7 @@ Added Functionality
 
 	*Set conditions to determine  when the function will trigger or not*
 
-	`remove_editor` *is subject to Metabox Maker's instantiation conditions*
+	*Function* `remove_editor` *is subject to Metabox Maker's instantiation conditions*
 
 	### About $conditions ###
 

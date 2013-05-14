@@ -3,6 +3,8 @@
 class MetaboxMaker {
 
 	var $boxes_to_make = array(),
+		$boxes_to_save = array(),
+		$remove_editor_conditions,
 		$init_params;
 
 
@@ -66,30 +68,40 @@ class MetaboxMaker {
 	}
 
 	function create_save_hook($metabox_data){
+		
+		$this->boxes_to_save[] = $metabox_data;			
 
-		add_action( 'save_post', function($post_id, $metabox_data){
+		if ( !has_action( 'save_post', array(&$this, 'process_boxes_to_save') )) {
+			add_action( 'save_post', array(&$this, 'process_boxes_to_save') );
+		}
+	}
 
-			// filter out unpermitted users
-			if ( 'page' == $_POST['post_type'] ||  'post' == $_POST['post_type']) {
-		        
-		        if ( !current_user_can( 'edit_page', $post_id ) || !current_user_can( 'edit_post', $post_id )){
-		          
-		          return $post_id;
-		        }
+	function process_boxes_to_save($post_id){
+
+		if ( !current_user_can( 'edit_page', $post_id ) || !current_user_can( 'edit_post', $post_id ) ){
+			return $post_id;
+		}
+
+		if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+
+			foreach ($this->boxes_to_save as $metabox_data){
+
+				if ( isset($metabox_data['on_autosave']) ) {
+
+					$metabox_data['on_autosave']($metabox_data['pass_params']);				
+				}
 			}
 
-			// do autosave if set
-			if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE && $metabox_data['on_autosave'] != NULL ){
+			return;
+		}
+        
+		foreach ($this->boxes_to_save as $metabox_data){
 
-				$metabox_data['on_autosave']( $metabox_data['pass_params'] );
+			if ( isset($metabox_data['on_save']) ) {
+
+				$metabox_data['on_save']($metabox_data['pass_params']);				
 			}
-
-			// do regular save if set
-			else if ($metabox_data['on_save']) {
-
-				$metabox_data['on_save']( $metabox_data['pass_params'] );
-			}
-		});
+		}        
 	}
 
 	function create_for_post_type($metabox_data, $post_type){
@@ -131,6 +143,14 @@ class MetaboxMaker {
 	function queue_for_construction($metabox_data){
 
 		$this->boxes_to_make[] = $metabox_data;
+
+		$this->setup_construction();
+
+		// if needed, create save hooks
+		if ( $metabox_data['on_save'] != NULL || $metabox_data['on_autosave'] != NULL ){
+
+			$this->create_save_hook($metabox_data);
+		}
 	}
 
 	function init_construction(){
@@ -163,12 +183,6 @@ class MetaboxMaker {
 				}
 			}
 		}
-
-		// if needed, create save hooks
-		if ( $metabox_data['on_save'] != NULL || $metabox_data['on_autosave'] != NULL ){
-
-			$this->create_save_hook($metabox_data);
-		}
 	}
 
 	function create($data) {
@@ -179,8 +193,6 @@ class MetaboxMaker {
 
 				$metabox_data = $data;
 				$this->queue_for_construction( $metabox_data );
-
-				$this->setup_construction();
 			break;
 
 			case 'multiple':
@@ -189,8 +201,6 @@ class MetaboxMaker {
 
 					$this->queue_for_construction( $metabox_data );
 				}
-
-				$this->setup_construction();
 			break;
 
 			case 'invalid':
@@ -203,7 +213,13 @@ class MetaboxMaker {
 
 	function remove_content_editor() {
 		
-		if ( $this->meets_conditions() == true ) {
+		$params = array();
+		if ($this->remove_editor_conditions != NULL) {
+
+			$params['conditions'] = $this->remove_editor_conditions;
+		}
+
+		if ( $this->meets_conditions($params) == true ) {
 		
 			global $_wp_post_type_features;
 
@@ -216,12 +232,16 @@ class MetaboxMaker {
 		}
 	}
 
-	function remove_editor(){
+	function remove_editor($conditions = NULL){
 	
 		add_action( 'add_meta_boxes', array( $this, 'remove_content_editor' ), 0 );
+		
+		if ( is_callable($conditions) ){
+			$this->remove_editor_conditions = $conditions;
+		} 
 	}
 
-	function __construct($init_params){
+	function __construct($init_params = NULL){
 
 		$this->init_params = $init_params;
 	}
