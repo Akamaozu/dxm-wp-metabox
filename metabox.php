@@ -53,7 +53,7 @@ class MetaboxMaker {
 		return $input_type;
 	}
 
-	private function set_defaults($metabox_data) {
+	private function set_defaults(&$metabox_data) {
 
 		// conditionals with default values if unset 
 		$metabox_data['title'] = ( isset ( $metabox_data['title'] ) ? $metabox_data['title'] : "" );
@@ -63,8 +63,6 @@ class MetaboxMaker {
 		$metabox_data['pass_params'] = ( isset( $metabox_data['pass_params'] ) ? $metabox_data['pass_params'] : NULL );
 		$metabox_data['on_autosave'] = ( isset( $metabox_data['on_autosave'] ) ? $metabox_data['on_autosave'] : NULL );
 		$metabox_data['on_save'] = ( isset( $metabox_data['on_save'] ) ? $metabox_data['on_save'] : NULL );
-
-		return $metabox_data;
 	}
 
 	function create_save_hook($metabox_data){
@@ -164,7 +162,7 @@ class MetaboxMaker {
 	function create_box($metabox_data){
 
 		// set defaults for unset variables
-		$metabox_data = $this->set_defaults($metabox_data);
+		$this->set_defaults($metabox_data);
 
 		// create for one post type
 		if ( is_string($metabox_data['post_type']) && $this->meets_conditions($metabox_data) == true ) {
