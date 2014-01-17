@@ -26,12 +26,6 @@ class MetaboxMaker {
 
 		$is_metabox = $this->is_metabox_data($input);
 
-		// filter out improper or empty $input
-		if ( $is_metabox  == false ) {
-
-			return $input_type;
-		}
-
 		// confirm proper $input
 		if ( $is_metabox == true ) {
 
