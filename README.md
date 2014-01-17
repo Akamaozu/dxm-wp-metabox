@@ -62,7 +62,7 @@ Making it **ridiculously easy** for you to create metaboxes for Wordpress Edit S
 		}
 
 		add_action('admin_init', 'create_test_metabox');
-
+![alt text](http://img.photobucket.com/albums/v600/metalzoav2/mm_test_metabox_zps7ab9f43c.jpg "Tada!")
 
 4. Rinse and repeat as needed.
 
