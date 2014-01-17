@@ -50,7 +50,7 @@ class MetaboxMaker {
 	private function set_defaults(&$metabox_data) {
 
 		// conditionals with default values if unset 
-		$metabox_data['title'] = ( isset ( $metabox_data['title'] ) ? $metabox_data['title'] : "" );
+		$metabox_data['title'] = ( isset ( $metabox_data['title'] ) ? $metabox_data['title'] : $metabox_data['id'] );
 		$metabox_data['context'] = ( isset( $metabox_data['context'] ) ? $metabox_data['context'] : "advanced" );
 		$metabox_data['priority'] = ( isset( $metabox_data['priority'] ) ? $metabox_data['priority'] : "default" );
 		$metabox_data['conditions'] = ( isset( $metabox_data['conditions'] ) ? $metabox_data['conditions'] : NULL );
