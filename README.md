@@ -28,9 +28,9 @@ Making it **ridiculously easy** for you to create metaboxes for Wordpress Edit S
 
 		$mm->create( 
 			array(
-				"id" => "mm_testbox", 
+				"id" => "mm_test_metabox", 
 				"post_type" => "post", 
-				"markup" => "mm_testbox_markup" 
+				"markup" => "mm_test_metabox_markup" 
 			) 
 		);
 
@@ -48,14 +48,14 @@ Making it **ridiculously easy** for you to create metaboxes for Wordpress Edit S
 			// specify required metabox parameters
 			$mm->create( 
 				array( 
-					"id" => "mm_testbox", 
+					"id" => "mm_test_metabox", 
 					"post_type" => "post", 
-					"markup" => "mm_testbox_markup" 
+					"markup" => "mm_test_metabox_markup" 
 				) 
 			);
 		}
 
-   		function mm_testbox_markup(){
+   		function mm_test_metabox_markup(){
 			
 			// html markup for the metabox			
 			echo "<h1>Hello World!</h1>";
@@ -77,9 +77,9 @@ Making it **ridiculously easy** for you to create metaboxes for Wordpress Edit S
 
 		$mm->create( 
 			array(
-				"id" => "mm_testbox", 
+				"id" => "mm_test_metabox", 
 				"post_type" => array("post", "page", "custom_post_type"), 
-				"markup" => "mm_testbox_markup" 
+				"markup" => "mm_test_metabox_markup" 
 			) 
 		);
 
