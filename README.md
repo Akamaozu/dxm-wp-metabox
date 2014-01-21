@@ -240,7 +240,7 @@ When Creating a Metabox
 	
 	*String containing the title used in the metabox header and screen options menu.*
 
-	*Default is blank.*
+	*Default is* `$args['id']`.
 
 5. **$args[** 'context' **]** 
 
